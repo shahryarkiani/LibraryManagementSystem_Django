@@ -1,0 +1,23 @@
+{% extends "base_template.html" %}
+{% block content %}
+
+
+<h1>Local Library </h1>
+  <p>Welcome to LocalLibrary, a website developed by <em>Shahryar Kiani</em>!</p>
+    <h3>Search Results: </h3>
+
+    <table>
+    <tr>
+        <th>Book Title</th>
+        <th>Author</th>
+        
+      </tr> 
+    {% for searchResult in searchResults %}
+    <tr>
+      <td><a href="{{ searchResult.get_absolute_url }}">{{ searchResult.title }} </a></td>
+      <td>{{ searchResult.author }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+    
+{% endblock %}

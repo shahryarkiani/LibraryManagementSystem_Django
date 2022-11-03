@@ -1,0 +1,24 @@
+{% extends "base_template.html" %}
+{% block content %}
+
+
+<h1>Local Library </h1>
+  <p>Welcome to LocalLibrary, a website developed by <em>Shahryar Kiani</em>!</p>
+    <h3><strong>{{ bookTitle }}</strong></h3>
+    <h4>By: {{ bookAuthor }}</h4>
+    <p>{{bookSummary}}</p>
+    <h3>Copies:</h3>
+    <table>
+    <tr>
+      <th>ISBN</th>
+      <th>Availability</th>
+    </tr> 
+    {% for bookInstance in bookInstances %}
+    <tr>
+      <td>{{bookInstance.isbn}}</td>
+      <td>{{bookInstance.status}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+    
+{% endblock %}
