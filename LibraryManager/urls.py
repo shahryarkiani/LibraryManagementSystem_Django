@@ -19,6 +19,7 @@ from django.views.generic import RedirectView
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,7 +30,15 @@ urlpatterns += [
 ]
 
 urlpatterns += [
+    path('manage/', include('LibrarianSystem.urls'))
+]
+
+urlpatterns += [
     path('', RedirectView.as_view(url='catalog/', permanent=True)),
+]
+
+urlpatterns +=[
+    path('accounts/', include('django.contrib.auth.urls'))
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
