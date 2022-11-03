@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-/LibraryManager/passwords.py
+LibraryManager/passwords.py
 
 # C extensions
 *.so
