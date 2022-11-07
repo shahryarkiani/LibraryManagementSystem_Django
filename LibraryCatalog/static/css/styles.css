@@ -35,3 +35,8 @@
   caption {
     padding: 10px;
   }
+
+  .side-padding {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}

@@ -19,4 +19,5 @@ from . import views
 
 urlpatterns = [
     path('', views.manageHome, name='manage-home'),
+    path('register/', views.manageRegister, name='manage-register'),
 ]

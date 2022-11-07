@@ -10,31 +10,42 @@
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <a class="navbar-brand" href="#"><h2>&nbsp &nbsp Local Library </h2></a>
+    <ul class="nav nav-tabs nav-fill">
+     
+      <li class="nav-item">
+        <a class="nav-link text-dark active" href="#">All Books</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light" href="#">All Authors</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light" href="#">Explore Books</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light" href="/manage/register">Your Account/Login</a>
+      </li>
+      
+      <li class="nav-item">
+        <form  class="form-inline my-2 my-lg-0 text-light">
+          {% csrf_token %}
+          {{ searchForm }}
+        </form>
+      </li>  
+    </ul>
+  
+  </nav>
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-2">
-      {% block sidebar %}
-        <ul class="sidebar-nav">
-          <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="">All books</a></li>
-          <li><a href="">All authors</a></li>
-          <li>
-            <form action="book/search"method="get">
-              {% csrf_token %}
-              {{ searchForm }}
-            </form>
-          </li>
-          
-          {% if user.is_authenticated %}
-          <li>Welcome, {{ user.get_full_name }}</li>
-          {% else %}
-          <li><a href="/accounts/login">Login here</a></li>
-          {% endif %}  
-        </ul>
-     {% endblock %}
       </div>
       <div class="col-sm-10 ">{% block content %}{% endblock %}</div>
     </div>
   </div>
+  
 </body>
+
+
+
 </html>

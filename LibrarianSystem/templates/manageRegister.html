@@ -1,0 +1,21 @@
+{% extends "manageBase.html" %}
+
+{% block content %}
+  
+    <h1>Library Card Registration</h1>
+
+    <form action="" method="post">
+    {% csrf_token %}
+    {% for field in registerForm %}
+    <label class="form-label"> {{ field.label }} </label>
+    {{ field }}
+    <div class="form-text">
+        {{ field.help_text }}
+    </div>
+    {% endfor %}
+    <br></br>
+    <button type="submit" class="btn btn-primary btn-lg">Register</button>
+    </form>
+
+  
+{% endblock %}
