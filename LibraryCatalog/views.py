@@ -1,9 +1,10 @@
 from calendar import c
 from django.http import HttpResponseNotFound
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.postgres import search
 from .models import BookInstance, Author, Book, BookGenre
 from .forms import searchForm
+from django.contrib.auth.decorators import login_required        
 
 # Create your views here.
 def index(request):
@@ -45,6 +46,12 @@ def book(request, pk):
     }
 
     return render(request, 'bookView.html', context=context)
+
+
+
+def account(request):
+    pass
+        
 
 
 def search(request):

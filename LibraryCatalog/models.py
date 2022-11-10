@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse
 import uuid
+from django.contrib.auth.models import User
+from datetime import date
 
 # Create your models here.
 
@@ -69,6 +71,13 @@ class BookInstance(models.Model):
     )
 
     status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True, default='u', help_text='Current Book Status')
+
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def is_overdue(self):
+        """Determines whether book is overdue"""
+        return self.due_date and date.today > self.due_date
+
 
     class Meta:
         ordering = ['due_date']
