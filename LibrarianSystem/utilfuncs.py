@@ -31,3 +31,8 @@ def sendCreatePasswordEmail(user):
         from_email='Test@mail.com',
         recipient_list=[toMail]
     )
+
+def sendReceiptEmail(user):
+    subject = "Library Checkout Receipt"
+    toMail = user.email
+    message = get_template('checkout_email.html').render()

@@ -1,0 +1,21 @@
+{% extends "manageBase.html" %}
+
+{% block content %}
+    {% csrf_token %}
+    <script src="https://unpkg.com/htmx.org@1.8.4"></script>
+
+    <h1>Checkout Here</h1>
+
+    <input name='isbn' type="text" hx-get="api/books/" hx-target="#BookList" hx-swap="afterend" hx-include="[name='isbn']"></input>
+
+    <table >
+        <tr id="BookList">
+            <th>Book</th>
+            <th>ISBN</th>
+        </tr>  
+    </table>
+      
+    
+
+  
+{% endblock %}

@@ -21,6 +21,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('book/view/<pk>', views.book, name='book-view'),
     path('book/search/', views.search, name='book-search'),
-    path('account/', views.account, name='account-view')
+    path('account/', views.account, name='account-view'),
 ]
 

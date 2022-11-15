@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from LibraryCatalog.forms import searchForm
 from .forms import signupForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from .utilfuncs import generateCardNumber, sendCreatePasswordEmail
+from .utilfuncs import generateCardNumber, sendCreatePasswordEmail, sendReceiptEmail
+from LibraryCatalog.models import BookInstance
 
 # Create your views here.
 
@@ -41,4 +42,39 @@ def manageRegister(request):
             'registerForm' : signupForm(),
         }
         return render(request, 'manageRegister.html', context=context)
+
+@staff_member_required
+@login_required(login_url='/accounts')
+def manageCheckout(request):
+    if request.method == 'GET':
+        return render(request, 'manageCheckout.html')
+    elif request.method == 'POST':
+        #Send Success Page, Send Receipt Email to User
+        return redirect()
+
+def bookListView(request):
     
+    bookInstance = BookInstance.objects.filter(isbn=request.GET['isbn']).first()
+
+    if not bookInstance == None:
+        context = {
+            'book' : bookInstance.book,
+            'bookInstance' : bookInstance
+        }
+        return render(request, 'bookListView.html', context=context)
+    else:
+        return ""
+
+def userListView(request):
+    
+    user = User.objects.filter(username=request.GET['id'])
+
+    if not user == None:
+        context = {
+            'user' : user
+        }
+        return render(request, 'userListView.html', context=context)
+    else:
+        return ""
+    
+
