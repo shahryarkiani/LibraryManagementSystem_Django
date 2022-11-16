@@ -50,11 +50,14 @@ def manageCheckout(request):
         return render(request, 'manageCheckout.html')
     elif request.method == 'POST':
         #Send Success Page, Send Receipt Email to User
-        return redirect()
+        print(request.POST)
+        return redirect('manage-home')
 
+@staff_member_required
+@login_required(login_url='/accounts')
 def bookListView(request):
     
-    bookInstance = BookInstance.objects.filter(isbn=request.GET['isbn']).first()
+    bookInstance = BookInstance.objects.filter(isbn=request.GET['bookisbn']).first()
 
     if not bookInstance == None:
         context = {
@@ -65,13 +68,17 @@ def bookListView(request):
     else:
         return ""
 
+@staff_member_required
+@login_required(login_url='/accounts')
 def userListView(request):
     
-    user = User.objects.filter(username=request.GET['id'])
+    user = User.objects.get(username=request.GET['id'])
+
 
     if not user == None:
         context = {
-            'user' : user
+            'user' : user,
+            'id' : request.GET['id']
         }
         return render(request, 'userListView.html', context=context)
     else:

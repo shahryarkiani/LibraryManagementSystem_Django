@@ -1,20 +1,36 @@
 {% extends "manageBase.html" %}
 
 {% block content %}
-    {% csrf_token %}
+    
     <script src="https://unpkg.com/htmx.org@1.8.4"></script>
 
-    <h1>Checkout Here</h1>
+    <h1>Checkout</h1>
 
-    <input name='isbn' type="text" hx-get="api/books/" hx-target="#BookList" hx-swap="afterend" hx-include="[name='isbn']"></input>
+    <br></br>
 
-    <table >
-        <tr id="BookList">
+    <form id="checkout" method="post">
+        {% csrf_token %}
+    <div id = "userDiv">
+        <h4>
+        <label for="id">Scan Library Card Number</label>
+        <input name="id" type="text" hx-get="api/users" hx-target="#userDiv" hx-swap="outerHTML" hx-include="[name='id']"></input>
+        </h4>
+    </div>
+    </form>  
+    <br></br>
+    
+    <h4>
+    <label for="bookisbn">Scan Book ISBN</label>
+    <input name="bookisbn" type="text" hx-get="api/books/" hx-target="#BookList" hx-swap="beforeend" hx-include="[name='bookisbn']"></input>
+    </h4>
+    
+    <table id="BookList">
+        <tr>
             <th>Book</th>
             <th>ISBN</th>
         </tr>  
     </table>
-      
+    
     
 
   
