@@ -80,7 +80,7 @@ class BookInstance(models.Model):
     status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True, default='a', help_text='Current Book Status')
     hold_status = models.CharField(max_length=1, choices=HOLD_STATUS, blank=True, default='n')
 
-    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='borrowed')
 
     def is_overdue(self):
         """Determines whether book is overdue"""

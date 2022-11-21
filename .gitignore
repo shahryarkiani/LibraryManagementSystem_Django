@@ -5,6 +5,8 @@ __pycache__/
 
 LibraryManager/passwords.py
 
+.vscode
+
 # C extensions
 *.so
 

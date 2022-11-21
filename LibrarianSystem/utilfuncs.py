@@ -33,10 +33,24 @@ def sendCreatePasswordEmail(user):
         recipient_list=[toMail]
     )
 
-def sendReceiptEmail(user):
+def sendReceiptEmail(user, books):
     subject = "Library Checkout Receipt"
     toMail = user.email
-    message = get_template('checkout_email.html').render()
+    
+    context = {
+		'user' : user,
+        'books' : books
+	}
+    
+    message = get_template('checkout_email.html').render(context)
+
+
+    send_mail(
+        subject,
+        message,
+        from_email='Test@mail.com',
+        recipient_list=[toMail]
+    )
 
 def generateBookLabel():
     rand = randint(1_000_000_000_000, 9_999_999_999_999)

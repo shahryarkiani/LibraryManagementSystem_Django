@@ -54,12 +54,11 @@ def manageCheckout(request):
         #Send Success Page, Send Receipt Email to User
         user = User.objects.get(username=request.POST['id'])
         labelIds = request.POST.getlist('labelId')        
-        print(labelIds)
         bookInstances = BookInstance.objects.all().filter(labelId__in=labelIds).filter(status='a')
         books = []
         for curBook in bookInstances:
             print(curBook.book.title)
-            #curBook.status = 'o'
+            curBook.status = 'o'
             curBook.borrower = user
             curBook.save()
             books.append(curBook)
@@ -68,6 +67,8 @@ def manageCheckout(request):
             'books' : books,
             'userCheckout' : user
         }
+
+        sendReceiptEmail(user, books)
 
         return render(request, 'successCheckout.html', context=context)  
 

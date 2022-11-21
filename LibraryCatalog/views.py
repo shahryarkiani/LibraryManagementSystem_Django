@@ -28,8 +28,9 @@ def index(request):
 
 def book(request, pk):
 
-    book = Book.objects.get(pk=pk)
-    if(book is None):
+    try:
+        book = Book.objects.get(pk=pk)
+    except Book.DoesNotExist:
         return HttpResponseNotFound('There aren\'t any books at this url!') 
 
     bookInstances = book.instances.all()
@@ -50,7 +51,15 @@ def book(request, pk):
 
 
 def account(request):
-    pass
+    
+    
+
+    context = {
+        'books' : request.user.borrowed.all()
+    }
+
+    return render(request, 'accountView.html', context=context)
+
         
 
 
