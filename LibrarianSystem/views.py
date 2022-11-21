@@ -53,19 +53,20 @@ def manageCheckout(request):
     elif request.method == 'POST':
         #Send Success Page, Send Receipt Email to User
         user = User.objects.get(username=request.POST['id'])
-        labelIds = request.POST['labelId']
-        
-        bookInstances = BookInstance.objects.filter(labelId__in=labelIds).filter(status='a')
-        print(bookInstances)
+        labelIds = request.POST.getlist('labelId')        
+        print(labelIds)
+        bookInstances = BookInstance.objects.all().filter(labelId__in=labelIds).filter(status='a')
         books = []
         for curBook in bookInstances:
-            curBook.status = 'o'
+            print(curBook.book.title)
+            #curBook.status = 'o'
             curBook.borrower = user
             curBook.save()
-            books.append(curBook.book)
+            books.append(curBook)
         
         context = {
-            'books' : books
+            'books' : books,
+            'userCheckout' : user
         }
 
         return render(request, 'successCheckout.html', context=context)  
