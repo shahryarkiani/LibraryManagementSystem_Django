@@ -23,4 +23,5 @@ urlpatterns = [
     path('checkout/', views.manageCheckout, name='manage-checkout'),
     path('checkout/api/books/', views.bookListView, name='book-list-view'),
     path('checkout/api/users/', views.userListView, name='user-list-view'),
+    path('users/', views.manageUser, name='manage-user')
 ]

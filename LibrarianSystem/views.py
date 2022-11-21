@@ -104,5 +104,14 @@ def userListView(request):
         return render(request, 'userListView.html', context=context)
     else:
         return HttpResponse('')
+
+@staff_member_required
+@login_required(login_url='/accounts')
+def manageUser(request):
+
+    name = request.GET.get('name')
+    id = request.GET.get('id')
+    if not id and not name:
+        return render(request, 'manageUsers.html')
     
 
