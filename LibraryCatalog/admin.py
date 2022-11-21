@@ -27,7 +27,7 @@ class AuthorAdmin(admin.ModelAdmin):
 @admin.register(BookInstance)
 class BookInstanceAdmin(admin.ModelAdmin):
     list_filter = ('status', 'due_date')
-    list_display = ('book', 'status', 'due_date', 'isbn')
+    list_display = ('book', 'status', 'due_date', 'isbn', 'labelId')
 
 admin.site.register(BookGenre)
 

@@ -62,15 +62,23 @@ class BookInstance(models.Model):
     book = models.ForeignKey(Book, on_delete=models.RESTRICT, null=True, related_name="instances")
     due_date = models.DateField(null=True, blank=True) 
     
+    labelId = models.CharField(max_length=13, unique=True)
+
     LOAN_STATUS = (
         ('o', 'ON LOAN'),
         ('h', 'ON HOLD'),
         ('a', 'AVAILABLE'),
         ('u', 'UNAVAILABLE'),
-        ('r', 'HOLD REQUESTED')
     )
 
-    status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True, default='u', help_text='Current Book Status')
+    HOLD_STATUS = (
+        ('n', 'NO HOLDS'),
+        ('r', 'HOLD REQUESTED'),
+        ('h', 'ON HOLD'),
+    )
+
+    status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True, default='a', help_text='Current Book Status')
+    hold_status = models.CharField(max_length=1, choices=HOLD_STATUS, blank=True, default='n')
 
     borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 

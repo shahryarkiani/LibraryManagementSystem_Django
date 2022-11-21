@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 from random import randint
 from django.contrib.auth.models import User
+from LibraryCatalog.models import BookInstance
 
 
 def generateCardNumber():
@@ -36,3 +37,10 @@ def sendReceiptEmail(user):
     subject = "Library Checkout Receipt"
     toMail = user.email
     message = get_template('checkout_email.html').render()
+
+def generateBookLabel():
+    rand = randint(1_000_000_000_000, 9_999_999_999_999)
+    while (BookInstance.objects.get(labelId=str(rand)).exists()):
+        rand = randint(1_000_000_000_000, 9_999_999_999_999)
+    return str(rand)    
+    
