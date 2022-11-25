@@ -57,4 +57,16 @@ def generateBookLabel():
     while (BookInstance.objects.get(labelId=str(rand)).exists()):
         rand = randint(1_000_000_000_000, 9_999_999_999_999)
     return str(rand)    
+
+
+def processCheckout(labelIds, checkoutUser):
+    bookInstances = BookInstance.objects.all().filter(labelId__in=labelIds).filter(status='a')
+    books = []
+    for curBook in bookInstances:
+            print(curBook.book.title)
+            curBook.status = 'o'
+            curBook.borrower = checkoutUser
+            curBook.save()
+            books.append(curBook)
     
+    return books

@@ -4,9 +4,11 @@ from LibraryCatalog.forms import searchForm
 from .forms import signupForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from .utilfuncs import generateCardNumber, sendCreatePasswordEmail, sendReceiptEmail
+from .utilfuncs import *
 from LibraryCatalog.models import BookInstance
 from django.http import HttpResponse
+from django.db.models import Value
+from django.db.models.functions import Concat
 
 
 # Create your views here.
@@ -14,32 +16,26 @@ from django.http import HttpResponse
 @staff_member_required
 @login_required(login_url='/accounts')
 def manageHome(request):
-    context = {
-        'searchForm': searchForm(),
-    }
-    return render(request, 'manageHome.html', context=context)
+    return render(request, 'manageHome.html')
 
 @staff_member_required
 @login_required(login_url='/accounts')
 def manageRegister(request):
     
-    if request.method == 'POST':
+    if request.method == 'POST': #Staff is registering a new user
         userData = signupForm(request.POST)
         if userData.is_valid():
             cardNum = generateCardNumber()
             userData = userData.cleaned_data
-            firstName = userData['first_name']
-            lastName = userData['last_name']
-            email = userData['email']
-            newUser = User.objects.create_user(username=cardNum, email=email, first_name=firstName, last_name=lastName, is_staff=False)
+            newUser = User.objects.create_user(username=cardNum, email=userData['email'], 
+            first_name=userData['first_name'], last_name=userData['last_name'], is_staff=False)
             context = {
                 'newUser' : newUser
             }
-            #newUser.delete()
             sendCreatePasswordEmail(newUser)
             return render(request, 'manageRegisterSuccess.html', context=context)
 
-    else:
+    else: #GET Request for the register page
         context = {
             'registerForm' : signupForm(),
         }
@@ -51,18 +47,12 @@ def manageCheckout(request):
     if request.method == 'GET':
         return render(request, 'manageCheckout.html')
     elif request.method == 'POST':
-        #Send Success Page, Send Receipt Email to User
+        #Find User and store all labels being checked out
         user = User.objects.get(username=request.POST['id'])
-        labelIds = request.POST.getlist('labelId')        
-        bookInstances = BookInstance.objects.all().filter(labelId__in=labelIds).filter(status='a')
-        books = []
-        for curBook in bookInstances:
-            print(curBook.book.title)
-            curBook.status = 'o'
-            curBook.borrower = user
-            curBook.save()
-            books.append(curBook)
-        
+        labelIds = request.POST.getlist('labelId')
+
+        #Process Checkout for all the books and user
+        books = processCheckout(labelIds=labelIds, checkoutUser=user)
         context = {
             'books' : books,
             'userCheckout' : user
@@ -70,6 +60,7 @@ def manageCheckout(request):
 
         sendReceiptEmail(user, books)
 
+        #Serves success checkout page
         return render(request, 'successCheckout.html', context=context)  
 
 @staff_member_required
@@ -113,5 +104,18 @@ def manageUser(request):
     id = request.GET.get('id')
     if not id and not name:
         return render(request, 'manageUsers.html')
+    
+    if name:
+        users = User.objects.annotate(full_name=Concat("first_name", Value(" "), "last_name")).filter()
+        context = {'users' : users}
+        return render(request, 'userManageListView', context=context)
+    else:
+        sUser = User.objects.get(username=id)
+        if not sUser == None:
+            return redirect(request)
+        else:
+            return HttpResponse('')
+
+
     
 
