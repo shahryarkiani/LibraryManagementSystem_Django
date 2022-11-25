@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from LibraryCatalog.forms import searchForm
 from .forms import signupForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
@@ -69,8 +68,6 @@ def bookListView(request):
     
     bookInstance = BookInstance.objects.get(labelId=request.GET['bookLabelId'])
 
-    print(bookInstance)
-
     if not bookInstance == None:
         context = {
             'book' : bookInstance.book,
@@ -82,10 +79,8 @@ def bookListView(request):
 
 @staff_member_required
 @login_required(login_url='/accounts')
-def userListView(request):
-    
+def userListView(request):    
     user = User.objects.get(username=request.GET['id'])
-
 
     if not user == None:
         context = {
@@ -104,7 +99,6 @@ def manageUser(request):
     id = request.GET.get('id')
     if not id and not name:
         return render(request, 'manageUsers.html')
-    
     if name:
         users = User.objects.annotate(full_name=Concat("first_name", Value(" "), "last_name")).filter()
         context = {'users' : users}

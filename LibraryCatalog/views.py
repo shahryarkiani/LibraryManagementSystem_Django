@@ -1,16 +1,11 @@
-from calendar import c
 from django.http import HttpResponseNotFound
-from django.shortcuts import render, redirect
-from django.contrib.postgres import search
-from .models import BookInstance, Author, Book, BookGenre
+from django.shortcuts import render
+from .models import BookInstance, Author, Book
 from .forms import searchForm
-from django.contrib.auth.decorators import login_required        
 
 # Create your views here.
 def index(request):
     """View Function for Library Catalog Home Page"""
-    
-
     num_availableBooks = BookInstance.objects.filter(status='a').count()
     num_authors = Author.objects.all().count()
     num_books = Book.objects.all().count()
@@ -38,11 +33,7 @@ def book(request, pk):
         bookI.status = bookI.get_status_display() 
 
     context = {
-        'bookTitle' : book.title,
-        'bookAuthor' : book.author,
-        'bookSummary' : book.summary,
-        'bookGenre' : book.genre,
-        'bookLanguage' : book.language,
+        'book' : book,
         'bookInstances' : bookInstances
     }
 
@@ -51,9 +42,6 @@ def book(request, pk):
 
 
 def account(request):
-    
-    
-
     context = {
         'books' : request.user.borrowed.all()
     }
