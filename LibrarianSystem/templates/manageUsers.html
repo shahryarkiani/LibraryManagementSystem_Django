@@ -9,11 +9,11 @@
     <div class="row">
       <div class="col-lg">
         <label for="cardNumber">Find User By Card Number</label>
-        <input name="cardNumber" type="text" hx-get="api/users" hx-target="#userDiv" hx-swap="innerHTML" hx-include="[name='id']"></input>
+        <input name="cardNumber" type="text" hx-get="api/userSearch" hx-target="#userDiv" hx-swap="innerHTML" hx-include="[name='id']"></input>
       </div>
       <div class="col-lg">
         <label for="nameSearch">Find User by Name</label>
-        <input name="nameSearch" type="text" hx-get="api/users" hx-target="#userDiv" hx-swap="innerHTML" hx-incldue="[name='name']"></input>
+        <input name="nameSearch" type="text" hx-get="api/userSearch" hx-target="#userDiv" hx-swap="innerHTML" hx-include="[name='name']"></input>
       </div>
     </div>
 </div>

@@ -87,28 +87,38 @@ def userListView(request):
             'user' : user,
             'id' : request.GET['id']
         }
-        return render(request, 'userListView.html', context=context)
+        return render(request, 'userCheckoutView.html', context=context)
     else:
         return HttpResponse('')
 
 @staff_member_required
 @login_required(login_url='/accounts')
 def manageUser(request):
+    return render(request, 'manageUsers.html')
 
+@staff_member_required
+@login_required(login_url='/accounts')
+def manageUserDetail(request, user):
+    #TODO returns management view of a specific user
+    pass
+
+@staff_member_required
+@login_required(login_url='/accounts')
+def searchUser(request):
     name = request.GET.get('name')
     id = request.GET.get('id')
-    if not id and not name:
-        return render(request, 'manageUsers.html')
     if name:
         users = User.objects.annotate(full_name=Concat("first_name", Value(" "), "last_name")).filter()
         context = {'users' : users}
-        return render(request, 'userManageListView', context=context)
-    else:
+        return render(request, 'userManageSearchView', context=context)
+    elif id:
         sUser = User.objects.get(username=id)
         if not sUser == None:
-            return redirect(request)
+            return manageUserDetail(request, sUser)
         else:
             return HttpResponse('')
+    else:
+        return HttpResponse('')
 
 
     
