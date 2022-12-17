@@ -73,4 +73,7 @@ def processCheckout(labelIds, checkoutUser):
         curBook.borrower = checkoutUser
         curBook.save()
         books.append(curBook)
+
+    sendReceiptEmail(checkoutUser, books)
+
     return books

@@ -22,6 +22,8 @@ urlpatterns = [
     path('register/', views.manageRegister, name='manage-register'),
     path('checkout/', views.manageCheckout, name='manage-checkout'),
     path('checkout/api/books/', views.bookListView, name='book-list-view'),
-    path('checkout/api/userSearch/', views.searchUser, name='user-search-view'),
+    path('checkout/api/users/', views.userListView, name='user-list-view'),
     path('users/', views.manageUser, name='manage-user'),
+    path('users/<pk>/', views.manageUserDetail, name='manage-user-detail'),
+    path('users/api/userSearch', views.searchUser, name='manage-user-search')
 ]

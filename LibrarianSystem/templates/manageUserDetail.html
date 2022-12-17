@@ -1,0 +1,30 @@
+{% extends "manageBase.html" %}
+
+{% block content %}
+
+<br></br>
+<h3> Account Owner: {{ user.get_full_name }}</h3>
+
+<br></br>
+
+<h4>Books Checked Out:  </h4>
+
+<table>
+<tr>
+    <th>Book</th>
+    <th>ISBN</th>
+    <th>Due Date</th>
+</tr>
+
+{% for book in books  %}
+<tr>
+    <td>{{ book.book.title }}</td>
+    <td>{{ book.isbn }}</td>
+    <td>{{ book.due_date }}</td>
+</tr>    
+{% endfor %}
+
+</table>
+
+
+{% endblock content %}

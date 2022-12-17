@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Value
 from django.db.models.functions import Concat
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import redirect, render
 
 from LibraryCatalog.models import BookInstance
@@ -61,8 +61,6 @@ def manageCheckout(request):
             'userCheckout': user
         }
 
-        sendReceiptEmail(user, books)
-
         # Serves success checkout page
         return render(request, 'successCheckout.html', context=context)
 
@@ -70,7 +68,7 @@ def manageCheckout(request):
 @staff_member_required
 @login_required(login_url='/accounts')
 def bookListView(request):
-
+    #Used for htmx, returns html containing information about book 
     bookInstance = BookInstance.objects.get(labelId=request.GET['bookLabelId'])
 
     if not bookInstance == None:
@@ -87,7 +85,6 @@ def bookListView(request):
 @login_required(login_url='/accounts')
 def userListView(request):
     user = User.objects.get(username=request.GET['id'])
-
     if not user == None:
         context = {
             'user': user,
@@ -96,6 +93,7 @@ def userListView(request):
         return render(request, 'userCheckoutView.html', context=context)
     else:
         return HttpResponse('')
+        #User not found, don't replace anything
 
 
 @staff_member_required
@@ -106,26 +104,37 @@ def manageUser(request):
 
 @staff_member_required
 @login_required(login_url='/accounts')
-def manageUserDetail(request, user):
-    # TODO returns management view of a specific user
-    pass
+def manageUserDetail(request, pk): 
+    try:
+        user = User.objects.get(username=str(pk))
+        context = {
+           'user': user,
+           'books': user.borrowed.all()
+        }
+        return render(request, 'manageUserDetail.html', context)
+    except User.DoesNotExist:
+        return HttpResponseNotFound('This User does not exist')
 
 
 @staff_member_required
 @login_required(login_url='/accounts')
 def searchUser(request):
-    name = request.GET.get('name')
-    id = request.GET.get('id')
+    name = request.GET.get('nameSearch')
+    id = request.GET.get('cardNumber')
+
+    users = []
+
     if name:
-        users = User.objects.annotate(full_name=Concat(
-            "first_name", Value(" "), "last_name")).filter()
+        users = User.objects.annotate(fullName=Concat('first_name', Value(' '), 'last_name')).filter(fullName__search=name)
         context = {'users': users}
-        return render(request, 'userManageSearchView', context=context)
+        return render(request, 'userManageSearchView.html', context=context)
     elif id:
-        sUser = User.objects.get(username=id)
-        if not sUser == None:
-            return manageUserDetail(request, sUser)
-        else:
+        try:
+            print('here') 
+            sUser = User.objects.get(username=id)
+            users.append(sUser)
+            return render(request, 'userManageSearchView.html', context={'users': users})
+        except User.DoesNotExist:
             return HttpResponse('')
     else:
         return HttpResponse('')

@@ -1,0 +1,18 @@
+<table>
+    <tr>
+      <th><h3>Username</h3></th>
+      <th><h3>Manage Link</h3></th>
+    </tr>
+    {% for user in users%}
+
+    <tr>
+    <td>
+        <h4>{{ user.get_full_name}} </h4>
+    </td>
+    <td>
+        <h4><a href="{% url 'manage-user-detail' user.username %}"> Manage This User </a></h4>
+    </td>
+    </tr>
+
+{% endfor %}
+  </table>
