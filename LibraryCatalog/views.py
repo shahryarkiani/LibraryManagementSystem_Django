@@ -37,7 +37,8 @@ def book(request, pk):
 
     context = {
         'book': book,
-        'bookInstances': bookInstances
+        'bookInstances': bookInstances,
+        'searchForm': searchForm()
     }
 
     return render(request, 'bookView.html', context=context)
@@ -45,11 +46,19 @@ def book(request, pk):
 
 def account(request):
     context = {
-        'books': request.user.borrowed.all()
+        'books': request.user.borrowed.all(),
+        'holds': request.user.holds.all(),
+        'searchForm': searchForm()
     }
 
     return render(request, 'accountView.html', context=context)
 
+def explore(request):
+    context = {
+        'books': request.user.borrowed.all(),
+        'searchForm': searchForm()
+    }
+    return render(request, 'exploreView.html', context=context)
 
 def search(request):
 
@@ -63,5 +72,6 @@ def search(request):
 
     context = {
         'searchResults': searchResults,
+        'searchForm': searchForm()
     }
     return render(request, 'searchResultView.html', context=context)

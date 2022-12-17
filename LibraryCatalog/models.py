@@ -92,6 +92,8 @@ class BookInstance(models.Model):
     hold_status = models.CharField(
         max_length=1, choices=HOLD_STATUS, blank=True, default='n')
 
+    holder = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='holds')
+
     borrower = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True, related_name='borrowed')
 
