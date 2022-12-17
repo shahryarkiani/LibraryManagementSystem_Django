@@ -49,6 +49,7 @@ def manageRegister(request):
 def manageCheckout(request):
     if request.method == 'GET':
         return render(request, 'manageCheckout.html')
+    #If the user is submitting a checkout
     elif request.method == 'POST':
         # Find User and store all labels being checked out
         user = User.objects.get(username=request.POST['id'])
@@ -69,31 +70,31 @@ def manageCheckout(request):
 @login_required(login_url='/accounts')
 def bookListView(request):
     #Used for htmx, returns html containing information about book 
-    bookInstance = BookInstance.objects.get(labelId=request.GET['bookLabelId'])
-
-    if not bookInstance == None:
+    try:
+        bookInstance = BookInstance.objects.get(labelId=request.GET['bookLabelId'])
         context = {
             'book': bookInstance.book,
             'bookInstance': bookInstance
         }
         return render(request, 'bookListView.html', context=context)
-    else:
+    except:
         return HttpResponse('')
 
 
 @staff_member_required
 @login_required(login_url='/accounts')
 def userListView(request):
-    user = User.objects.get(username=request.GET['id'])
-    if not user == None:
+#This method is for use with htmx
+#it returns html containing the user if they exist
+    try:
+        user = User.objects.get(username=request.GET['id'])
         context = {
             'user': user,
             'id': request.GET['id']
         }
         return render(request, 'userCheckoutView.html', context=context)
-    else:
+    except:
         return HttpResponse('')
-        #User not found, don't replace anything
 
 
 @staff_member_required
@@ -105,6 +106,7 @@ def manageUser(request):
 @staff_member_required
 @login_required(login_url='/accounts')
 def manageUserDetail(request, pk): 
+    #This view returns a manage page for a specific user
     try:
         user = User.objects.get(username=str(pk))
         context = {
@@ -119,16 +121,19 @@ def manageUserDetail(request, pk):
 @staff_member_required
 @login_required(login_url='/accounts')
 def searchUser(request):
+    #This method returns a table of matching users with links to their pages
     name = request.GET.get('nameSearch')
     id = request.GET.get('cardNumber')
 
     users = []
 
+    #If the search paramater includes a name
     if name:
+        #search by full name
         users = User.objects.annotate(fullName=Concat('first_name', Value(' '), 'last_name')).filter(fullName__search=name)
         context = {'users': users}
         return render(request, 'userManageSearchView.html', context=context)
-    elif id:
+    elif id: #the search parameter includes an id
         try:
             print('here') 
             sUser = User.objects.get(username=id)

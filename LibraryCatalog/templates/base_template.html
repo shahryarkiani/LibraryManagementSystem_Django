@@ -17,14 +17,20 @@
       <li class="nav-item">
         <a class="nav-link text-light" href="#">Explore Books</a>
       </li>
-      <li class="nav-item">
+      
         {% if user.is_authenticated %}
+        <li class="nav-item">
         <a class="nav-link text-light" href="/catalog/account">Your Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/accounts/logout">Logout</a>
+          </li>
         {% else %}
+        <li class="nav-item">
         <a class="nav-link text-light" href="/accounts/login">Login</a>
+        </li>
         {% endif %}
         
-      </li>
       
       <li class="nav-item">
         <form  class="form-inline my-2 my-lg-0 text-light" action="book/search">
