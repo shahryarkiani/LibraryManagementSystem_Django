@@ -53,12 +53,7 @@ def account(request):
 
     return render(request, 'accountView.html', context=context)
 
-def explore(request):
-    context = {
-        'books': request.user.borrowed.all(),
-        'searchForm': searchForm()
-    }
-    return render(request, 'exploreView.html', context=context)
+
 
 def search(request):
 
