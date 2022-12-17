@@ -10,12 +10,12 @@
   <h3>  
   <div class="row">
       <div class="col-lg">
-        <label for="cardNumber">Find User By Card Number</label>
-        <input name="cardNumber" type="text" hx-get="api/userSearch" hx-target="#userTable" hx-swap="innerHTML" hx-include="[name='id']"></input>
+        <label class="form-label" for="cardNumber">Find User By Card Number</label>
+        <input class="form-control" name="cardNumber" type="text" hx-get="api/userSearch" hx-target="#userTable" hx-swap="innerHTML" hx-include="[name='id']"></input>
       </div>
       <div class="col-lg">
-        <label for="nameSearch">Find User by Name</label>
-        <input name="nameSearch" type="text" hx-get="api/userSearch" hx-target="#userTable" hx-swap="innerHTML" hx-include="[name='name']"></input>
+        <label class="form-label" for="nameSearch">Find User by Name</label>
+        <input class="form-control" name="nameSearch" type="text" hx-get="api/userSearch" hx-target="#userTable" hx-swap="innerHTML" hx-include="[name='name']"></input>
       </div>
     </div>
   </h3>
