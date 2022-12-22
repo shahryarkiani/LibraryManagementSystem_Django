@@ -1,0 +1,22 @@
+{% extends "manageBase.html" %}
+
+{% block content %}
+<br></br>
+<table class="table table-dark table-striped table-hover">
+    <tr>
+      <th><h4>Book</h4></th>
+      <th><h4>Book Label ID</h4></th>
+      <th><h4>Manage Hold</h4></th>
+    </tr>
+
+    {% for book in holds %}
+
+    <tr>
+        <td> {{ book.book.title}} </td>
+        <td> {{ book.labelId }} </td>
+        <td><a href={%url 'manage-holds-detail' book.labelId%}>Mark Ready for Pickup</a></td>
+        </tr>
+
+    {% endfor %}
+
+{% endblock %}

@@ -13,7 +13,7 @@
     <div id = "userDiv">
         <h4>
         <label for="id">Scan Library Card Number</label>
-        <input name="id" type="text" hx-get="api/users" hx-target="#userDiv" hx-swap="outerHTML" hx-include="[name='id']"></input>
+        <input class="form-control" name="id" type="text" hx-get="api/users" hx-target="#userDiv" hx-swap="outerHTML" hx-include="[name='id']"></input>
         </h4>
     </div>
     </form>  
@@ -21,7 +21,7 @@
     
     <h4>
     <label for="bookLabelId">Scan Book Label</label>
-    <input name="bookLabelId" type="text" hx-get="api/books/" hx-target="#BookList" hx-swap="beforeend" hx-include="[name='bookLabelId']"></input>
+    <input class="form-control" name="bookLabelId" type="text" hx-get="api/books/" hx-target="#BookList" hx-swap="beforeend" hx-include="[name='bookLabelId']"></input>
     </h4>
     
     

@@ -143,3 +143,32 @@ def searchUser(request):
             return HttpResponse('')
     else:
         return HttpResponse('')
+
+@staff_member_required
+@login_required(login_url='/accounts')
+def manageHolds(request):
+    requestedHolds = BookInstance.objects.filter(hold_status='r')
+    context = {
+        'holds': requestedHolds
+    }
+    return render(request, 'manageHold.html', context=context)
+
+@staff_member_required
+@login_required(login_url='/accounts')
+def manageHoldsDetail(request, id):
+    if request.method == 'GET':
+        try:
+            bookI = BookInstance.objects.get(labelId=id)
+            context = {
+                'book' : bookI
+            }
+            return render(request, 'manageHoldDetail.html', context=context)
+        except BookInstance.DoesNotExist:
+            return HttpResponseNotFound('There is no book associated with the specified label id')
+    elif request.method == 'POST':
+        requestedHolds = BookInstance.objects.filter(hold_status='r')
+        context = {
+            'holds': requestedHolds
+        }
+        return render(request, 'manageHold.html', context=context)
+    pass

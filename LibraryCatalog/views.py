@@ -25,7 +25,8 @@ def index(request):
 
 
 def book(request, pk):
-
+    #Returns view for a specific book
+    #Includes all instances of books and current availibility
     try:
         book = Book.objects.get(pk=pk)
     except Book.DoesNotExist:
@@ -45,6 +46,7 @@ def book(request, pk):
 
 
 def account(request):
+    #Returns account view for user, containg all their holds and borrowed books
     context = {
         'books': request.user.borrowed.all(),
         'holds': request.user.holds.all(),

@@ -25,5 +25,7 @@ urlpatterns = [
     path('checkout/api/users/', views.userListView, name='user-list-view'),
     path('users/', views.manageUser, name='manage-user'),
     path('users/<pk>/', views.manageUserDetail, name='manage-user-detail'),
-    path('users/api/userSearch', views.searchUser, name='manage-user-search')
+    path('users/api/userSearch', views.searchUser, name='manage-user-search'),
+    path('holds/', views.manageHolds, name='manage-holds'),
+    path('holds/<id>/', views.manageHoldsDetail, name='manage-holds-detail')
 ]

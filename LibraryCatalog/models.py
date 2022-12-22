@@ -103,6 +103,9 @@ class BookInstance(models.Model):
 
     class Meta:
         ordering = ['due_date']
+        indexes = [
+            models.Index(fields=['labelId'])
+        ]
 
     def __str__(self):
         """String that represents a BookInstance object"""
