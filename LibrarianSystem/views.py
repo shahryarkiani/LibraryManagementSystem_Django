@@ -170,7 +170,7 @@ def manageHoldsDetail(request, id):
         if 'submit_yes' in request.POST:
             try:
                 bookI = BookInstance.objects.get(labelId=id)
-                if bookI.borrower == None or bookI.hold_status == 'n':
+                if bookI.holder == None or bookI.hold_status == 'n':
                     return HttpResponseNotFound('This book is not currently on hold by anyone')
                 bookI.hold_status = 'h'
                 bookI.save()

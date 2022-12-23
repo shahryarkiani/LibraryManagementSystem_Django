@@ -1,6 +1,8 @@
 from django.http import HttpResponseNotFound
 from django.shortcuts import render
 
+from django.core.paginator import Paginator
+
 from .forms import searchForm
 from .models import Author, Book, BookInstance
 
@@ -72,3 +74,15 @@ def search(request):
         'searchForm': searchForm()
     }
     return render(request, 'searchResultView.html', context=context)
+
+def explore(request):
+    books = Book.objects.all()
+    bookPaginator = Paginator(books, 5)
+
+    pageNum = request.GET.get('page')
+    bookList = bookPaginator.get_page(pageNum)
+    context = {
+        'searchForm': searchForm(),
+        'books' : bookList
+    }
+    return render(request, 'exploreView.html', context=context)

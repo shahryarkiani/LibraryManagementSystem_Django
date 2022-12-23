@@ -29,8 +29,12 @@
         {% endif %}
         
       
+        <li>
+          <a class="nav-link text-light" href="{%url 'explore-view'%}">Explore Books</a>
+        </li>
+
       <li class="nav-item">
-        <form  class="form-inline my-2 my-lg-0 text-light" action="book/search">
+        <form  class="form-inline my-2 my-lg-0 text-light" action="{% url 'book-search' %}">
           {% csrf_token %}
           {{ searchForm }}
         </form>
