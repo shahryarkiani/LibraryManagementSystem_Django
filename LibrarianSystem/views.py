@@ -166,6 +166,17 @@ def manageHoldsDetail(request, id):
         except BookInstance.DoesNotExist:
             return HttpResponseNotFound('There is no book associated with the specified label id')
     elif request.method == 'POST':
+        
+        if 'submit_yes' in request.POST:
+            try:
+                bookI = BookInstance.objects.get(labelId=id)
+                if bookI.borrower == None or bookI.hold_status == 'n':
+                    return HttpResponseNotFound('This book is not currently on hold by anyone')
+                bookI.hold_status = 'h'
+                bookI.save()
+            except BookInstance.DoesNotExist:
+                return HttpResponseNotFound('There is no book associated with the specificed label id')
+        
         requestedHolds = BookInstance.objects.filter(hold_status='r')
         context = {
             'holds': requestedHolds

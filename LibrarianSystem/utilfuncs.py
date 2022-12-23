@@ -71,6 +71,9 @@ def processCheckout(labelIds, checkoutUser):
         print(curBook.book.title)
         curBook.status = 'o'
         curBook.borrower = checkoutUser
+        if curBook.holder == checkoutUser:
+            curBook.holder = None
+            curBook.hold_status = 'n'
         curBook.save()
         books.append(curBook)
 

@@ -84,7 +84,7 @@ class BookInstance(models.Model):
     HOLD_STATUS = (
         ('n', 'NO HOLDS'),
         ('r', 'HOLD REQUESTED'),
-        ('h', 'ON HOLD'),
+        ('h', 'ON HOLD - READY FOR PICKUP'),
     )
 
     status = models.CharField(max_length=1, choices=LOAN_STATUS,
