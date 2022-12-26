@@ -12,11 +12,19 @@
     <tr>
       <th>ISBN</th>
       <th>Availability</th>
+      <th>Request Hold</th>
     </tr> 
     {% for bookInstance in bookInstances %}
     <tr>
       <td>{{bookInstance.isbn}}</td>
-      <td>{{bookInstance.status}}</td>
+      <td>{{bookInstance.get_status_display}}</td>
+      
+      {% if bookInstance.holder == None %}
+      <td><a href={%url 'request-view' bookInstance.labelId%}>Request Hold</a></td>
+      {% else %}
+      <td>Unavailable For Hold</td>
+      {% endif %}
+
     </tr>
     {% endfor %}
   </table>

@@ -24,4 +24,23 @@
 
 </table>
 
+<h4>Books On Hold:  </h4>
+
+<table>
+<tr>
+    <th>Book</th>
+    <th>ISBN</th>
+    <th>Hold Status</th>
+</tr>
+
+{% for hold in holds  %}
+<tr>
+    <td>{{ hold.book.title }}</td>
+    <td>{{ hold.isbn }}</td>
+    <td>{{ hold.get_hold_status_display }}</td>
+</tr>    
+{% endfor %}
+
+</table>
+
 {% endblock content %}

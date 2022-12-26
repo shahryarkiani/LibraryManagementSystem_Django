@@ -1,5 +1,6 @@
-from django.http import HttpResponseNotFound
-from django.shortcuts import render
+from django.http import HttpResponseNotFound, HttpResponseBadRequest
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 from django.core.paginator import Paginator
 
@@ -35,8 +36,6 @@ def book(request, pk):
         return HttpResponseNotFound('There aren\'t any books at this url!')
 
     bookInstances = book.instances.all()
-    for bookI in bookInstances:
-        bookI.status = bookI.get_status_display()
 
     context = {
         'book': book,
@@ -46,7 +45,7 @@ def book(request, pk):
 
     return render(request, 'bookView.html', context=context)
 
-
+@login_required(login_url="/accounts")
 def account(request):
     #Returns account view for user, containg all their holds and borrowed books
     context = {
@@ -86,3 +85,30 @@ def explore(request):
         'books' : bookList
     }
     return render(request, 'exploreView.html', context=context)
+
+
+@login_required(login_url="/accounts")
+def requestHold(request, id):
+    if request.method == 'GET':
+        try:
+            book = BookInstance.objects.get(labelId=id)
+            context = {
+                'book' : book,
+                'searchForm' : searchForm()
+            }
+            return render(request, 'requestHold.html', context=context)
+        except BookInstance.DoesNotExist:
+            return HttpResponseNotFound('This book does not exist')
+    elif request.method == 'POST':
+        try:
+            book = BookInstance.objects.get(labelId=id)
+
+            if book.holder != None:
+                return HttpResponseBadRequest('Sorry, this book is already on hold for someone else')
+            book.holder = request.user
+            book.hold_status = 'r'
+            book.save()
+            return redirect('account-view')
+
+        except BookInstance.DoesNotExist:
+            return HttpResponseNotFound('This book does not exist')
