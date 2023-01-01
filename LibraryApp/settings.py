@@ -88,7 +88,7 @@ DATABASES = {
         'USER': passwords.POSTGRESQL_USER,
         'PASSWORD': passwords.POSTGRESQL_PASSWORD,
         'HOST': '127.0.0.1',
-        'PORT': '49153',
+        'PORT': '5432',
     }
 }
 
