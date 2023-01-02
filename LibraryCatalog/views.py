@@ -103,11 +103,21 @@ def requestHold(request, id):
         try:
             book = BookInstance.objects.get(labelId=id)
 
-            if book.holder != None:
-                return HttpResponseBadRequest('Sorry, this book is already on hold for someone else')
-            book.holder = request.user
-            book.hold_status = 'r'
-            book.save()
+            if 'submit_yes' in request.POST:
+                #Marks book on hold for user
+                if book.holder != None:
+                    return HttpResponseBadRequest('Sorry, this book is already on hold for someone else')
+                book.holder = request.user
+                book.hold_status = 'r'
+                book.save()
+            elif 'cancel_yes' in request.POST:
+                #Cancels hold for book
+                if book.holder != request.user:
+                    return HttpResponseBadRequest('Sorry, this book is on hold for someone else')
+                book.holder = None
+                book.hold_status = 'n'
+                book.save()
+            #Redirects user to their account view, where they can confirm the book was put on hold
             return redirect('account-view')
 
         except BookInstance.DoesNotExist:

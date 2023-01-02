@@ -31,6 +31,7 @@
     <th>Book</th>
     <th>ISBN</th>
     <th>Hold Status</th>
+    <th>Manage Hold<th>
 </tr>
 
 {% for hold in holds  %}
@@ -38,6 +39,7 @@
     <td>{{ hold.book.title }}</td>
     <td>{{ hold.isbn }}</td>
     <td>{{ hold.get_hold_status_display }}</td>
+    <td><a href={% url 'request-view' hold.labelId %}>Manage Hold</a></td>
 </tr>    
 {% endfor %}
 
